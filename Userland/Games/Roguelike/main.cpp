@@ -5,9 +5,13 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 #include "Game.h"
+#include "MapViewport.h"
+#include "Player.h"
 #include <LibConfig/Client.h>
 #include <LibCore/System.h>
+#include <LibGUI/Statusbar.h>
 #include <LibGUI/Application.h>
+#include <LibGUI/BoxLayout.h>
 #include <LibGUI/Icon.h>
 #include <LibGUI/Window.h>
 #include <LibMain/Main.h>
@@ -36,11 +40,14 @@ ErrorOr<int> serenity_main(Main::Arguments arguments)
     auto main_widget = TRY(window->try_set_main_widget<GUI::Widget>());
     main_widget->set_fill_with_background_color(true);
     
-    // this needs to be changed
-    auto game = TRY(main_widget->try_add<Roguelike::Game>());
-    game->set_focus(true);
+    (void)TRY(main_widget->try_set_layout<GUI::VerticalBoxLayout>());
+    
+    auto viewport = TRY(main_widget->try_add<Roguelike::MapViewport>());
+    viewport->set_focus(true);
 
-    //window->set_icon(app_icon.bitmap_for_size(16));
+    auto statusbar = TRY(main_widget->try_add<GUI::Statusbar>());
+
+    window->set_icon(app_icon.bitmap_for_size(16));
     window->show();
 
     return app->exec();

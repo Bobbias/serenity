@@ -9,13 +9,8 @@
 
 namespace Roguelike {
 
-Game::Game(){
+Game::Game() {
 
 };
-void Game::resize_event(GUI::ResizeEvent&) {};
-void Game::keydown_event(GUI::KeyEvent&){};
-void Game::paint_event(GUI::PaintEvent&){};
-void Game::timer_event(Core::TimerEvent&){};
-
 
 }

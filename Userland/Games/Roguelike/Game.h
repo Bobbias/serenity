@@ -18,21 +18,26 @@
 
 namespace Roguelike {
 
-class Game final : public GUI::Frame {
-    C_OBJECT(Game);
-
+class Game final
+{
 public:
     Game(); // main ctor
     Game(Game const&) = default; // copy ctor
-    Game& operator=(Game const&) = default;
 
     virtual ~Game() override = default;
 
+    enum class Direction {
+        Up,
+        Down,
+        Left,
+        Right,
+    };
+
 private:
-    virtual void resize_event(GUI::ResizeEvent&) override;
-    virtual void paint_event(GUI::PaintEvent&) override;
-    virtual void keydown_event(GUI::KeyEvent&) override;
-    virtual void timer_event(Core::TimerEvent&) override;
+    Roguelike::Player m_player { }
+
+    ErrorOr<void> try_move_player_to();
+    ErrorOr<void> ensure_move_player_to();
 };
 
 }

@@ -98,7 +98,7 @@ static void int_handler(int)
     // pass
 }
 
-int main(int argc, char** argv)
+ErrorOr<int> serenity_main(Main::Arguments arguments)
 {
     bool append = false;
     bool ignore_interrupts = false;
@@ -108,7 +108,7 @@ int main(int argc, char** argv)
     args_parser.add_option(append, "Append, don't overwrite", "append", 'a');
     args_parser.add_option(ignore_interrupts, "Ignore SIGINT", "ignore-interrupts", 'i');
     args_parser.add_positional_argument(paths, "Files to copy stdin to", "file", Core::ArgsParser::Required::No);
-    args_parser.parse(argc, argv);
+    args_parser.parse(arguments);
 
     if (ignore_interrupts) {
         if (signal(SIGINT, int_handler) == SIG_ERR)

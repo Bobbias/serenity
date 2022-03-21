@@ -28,7 +28,7 @@ class Game final : public Core::Object
 public:
     Game(Game const&) = default; // copy ctor
 
-    // virtual ~Game() override = default;
+    virtual ~Game() override = default;
 
     enum class Direction {
         Up,
@@ -37,12 +37,21 @@ public:
         Right,
     };
 
+    enum class GameState {
+        Play,
+    };
+
+    GameState get_current_game_state();
+    void set_current_game_state(GameState);
+    NonnullRefPtr<Roguelike::Player> get_player();
+
 private:
     Game(); // main ctor
-    Roguelike::Player m_player {};
+    NonnullRefPtr<Roguelike::Player> m_player = Player::construct();
 
     ErrorOr<void> try_move_player_to();
     ErrorOr<void> ensure_move_player_to();
-};
 
+    GameState m_current_game_state = { GameState::Play };
+};
 }

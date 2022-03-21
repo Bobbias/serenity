@@ -45,7 +45,7 @@ ErrorOr<int> serenity_main(Main::Arguments arguments)
     
     (void)TRY(main_widget->try_set_layout<GUI::VerticalBoxLayout>());
 
-    auto game = Roguelike::Game::create();
+    auto game = Roguelike::Game::construct();
     
 
     auto viewport = TRY(main_widget->try_add<Roguelike::MapViewport>(game));

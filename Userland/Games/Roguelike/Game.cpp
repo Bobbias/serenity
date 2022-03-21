@@ -14,7 +14,4 @@ Game::Game()
 
 };
 
-NonnullRefPtr<Game> Game::create(){
-    return Game();
-}
 }

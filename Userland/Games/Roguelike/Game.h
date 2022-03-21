@@ -28,8 +28,6 @@ class Game final : public Core::Object
 public:
     Game(Game const&) = default; // copy ctor
 
-    static NonnullRefPtr<Game> create();
-
     // virtual ~Game() override = default;
 
     enum class Direction {

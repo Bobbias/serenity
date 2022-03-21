@@ -90,5 +90,8 @@ void MapViewport::paint_event(GUI::PaintEvent& event)
     painter.translate(frame_thickness(), frame_thickness());
 
     painter.fill_rect(rect(), background_color);
+    painter.draw_text(event.rect(), "Hello World!"sv, Gfx::TextAlignment::Center, Color::from_rgb(0xFFFFFF));
+
+    
 }
 }

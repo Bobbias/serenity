@@ -33,7 +33,7 @@ void MapViewport::resize_event(GUI::ResizeEvent&)
 
 void MapViewport::resize()
 {
-    TODO();
+    // TODO();
 }
 
 void MapViewport::keydown_event(GUI::KeyEvent& event)

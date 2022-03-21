@@ -39,42 +39,10 @@ void MapViewport::resize()
 void MapViewport::keydown_event(GUI::KeyEvent& event)
 {
     (void)event;
-    // if (!on_move)
-    //     return;
-
-    // switch (event.key()) {
-    // case KeyCode::Key_A:
-    // case KeyCode::Key_Left:
-    //     on_move(Game::Direction::Left);
-    //     break;
-    // case KeyCode::Key_D:
-    // case KeyCode::Key_Right:
-    //     on_move(Game::Direction::Right);
-    //     break;
-    // case KeyCode::Key_W:
-    // case KeyCode::Key_Up:
-    //     on_move(Game::Direction::Up);
-    //     break;
-    // case KeyCode::Key_S:
-    // case KeyCode::Key_Down:
-    //     on_move(Game::Direction::Down);
-    //     break;
-    // default:
-    //     return;
-    // }
 }
 
 void MapViewport::timer_event(Core::TimerEvent&)
 {
-    // if (slide_animation_frame < animation_duration) {
-    //     slide_animation_frame++;
-    //     update();
-    // } else if (pop_in_animation_frame < animation_duration) {
-    //     pop_in_animation_frame++;
-    //     update();
-    //     if (pop_in_animation_frame == animation_duration)
-    //         stop_timer();
-    // }
     TODO();
 }
 

@@ -11,6 +11,7 @@
 #include <LibGfx/FontDatabase.h>
 #include <LibGfx/Palette.h>
 
+namespace Roguelike {
 MapViewport::MapViewport()
 {
 }
@@ -32,34 +33,35 @@ void MapViewport::resize_event(GUI::ResizeEvent&)
 
 void MapViewport::resize()
 {
-    TODO("Resize not yet implemented");
+    TODO();
 }
 
 void MapViewport::keydown_event(GUI::KeyEvent& event)
 {
-    if (!on_move)
-        return;
+    (void)event;
+    // if (!on_move)
+    //     return;
 
-    switch (event.key()) {
-    case KeyCode::Key_A:
-    case KeyCode::Key_Left:
-        on_move(Game::Direction::Left);
-        break;
-    case KeyCode::Key_D:
-    case KeyCode::Key_Right:
-        on_move(Game::Direction::Right);
-        break;
-    case KeyCode::Key_W:
-    case KeyCode::Key_Up:
-        on_move(Game::Direction::Up);
-        break;
-    case KeyCode::Key_S:
-    case KeyCode::Key_Down:
-        on_move(Game::Direction::Down);
-        break;
-    default:
-        return;
-    }
+    // switch (event.key()) {
+    // case KeyCode::Key_A:
+    // case KeyCode::Key_Left:
+    //     on_move(Game::Direction::Left);
+    //     break;
+    // case KeyCode::Key_D:
+    // case KeyCode::Key_Right:
+    //     on_move(Game::Direction::Right);
+    //     break;
+    // case KeyCode::Key_W:
+    // case KeyCode::Key_Up:
+    //     on_move(Game::Direction::Up);
+    //     break;
+    // case KeyCode::Key_S:
+    // case KeyCode::Key_Down:
+    //     on_move(Game::Direction::Down);
+    //     break;
+    // default:
+    //     return;
+    // }
 }
 
 void MapViewport::timer_event(Core::TimerEvent&)
@@ -73,7 +75,7 @@ void MapViewport::timer_event(Core::TimerEvent&)
     //     if (pop_in_animation_frame == animation_duration)
     //         stop_timer();
     // }
-    TODO("Timer event not yet implemented");
+    TODO();
 }
 
 void MapViewport::paint_event(GUI::PaintEvent& event)
@@ -88,4 +90,5 @@ void MapViewport::paint_event(GUI::PaintEvent& event)
     painter.translate(frame_thickness(), frame_thickness());
 
     painter.fill_rect(rect(), background_color);
+}
 }

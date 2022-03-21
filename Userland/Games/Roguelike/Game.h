@@ -4,6 +4,7 @@
  *
  * SPDX-License-Identifier: BSD-2-Clause
  */
+#include "Player.h"
 #include <AK/Optional.h>
 #include <AK/Random.h>
 #include <AK/Vector.h>
@@ -12,6 +13,8 @@
 #include <LibGUI/Painter.h>
 #include <LibGfx/Bitmap.h>
 #include <LibGfx/Font.h>
+#include <LibGfx/Forward.h>
+#include <LibGfx/Point.h>
 #include <LibGfx/StandardCursor.h>
 
 #pragma once
@@ -24,7 +27,7 @@ public:
     Game(); // main ctor
     Game(Game const&) = default; // copy ctor
 
-    virtual ~Game() override = default;
+    // virtual ~Game() override = default;
 
     enum class Direction {
         Up,
@@ -34,7 +37,7 @@ public:
     };
 
 private:
-    Roguelike::Player m_player { }
+    Roguelike::Player m_player {};
 
     ErrorOr<void> try_move_player_to();
     ErrorOr<void> ensure_move_player_to();

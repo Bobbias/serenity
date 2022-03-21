@@ -6,7 +6,8 @@
  */
 
 #include <AK/Types.h>
-#include <libgfx/Point.h>
+#include <LibGfx/Forward.h>
+#include <LibGfx/Point.h>
 
 #pragma once
 
@@ -15,9 +16,9 @@ namespace Roguelike
 class Player
 {
 private:
-    IntPoint m_current_location{ 0, 0 };
-    u32 m_current_health { 20 };
+    Gfx::IntPoint m_current_location{ 0, 0 };
     u32 m_maximum_health { 20 };
+    u32 m_current_health { 20 };
 
 public:
     explicit Player();
@@ -27,7 +28,6 @@ public:
 
     u32 get_current_health() { return m_current_health; };
     u32 get_maximum_health() { return m_maximum_health; };
-    IntPoint get_current_location() { return m_current_location; };
-
+    Gfx::IntPoint get_current_location() { return m_current_location; };
 };
 }

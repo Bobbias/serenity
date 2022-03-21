@@ -9,6 +9,8 @@
 #include "Player.h"
 #include <LibConfig/Client.h>
 #include <LibCore/System.h>
+#include <LibGfx/Forward.h>
+#include <LibGfx/Point.h>
 #include <LibGUI/Statusbar.h>
 #include <LibGUI/Application.h>
 #include <LibGUI/BoxLayout.h>

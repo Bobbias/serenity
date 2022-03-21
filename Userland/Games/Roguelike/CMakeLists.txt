@@ -7,6 +7,8 @@ serenity_component(
 set(SOURCES
     Game.cpp
     main.cpp
+    MapViewport.cpp
+    Player.cpp
 )
 
 serenity_app(Roguelike ICON app-roguelike)

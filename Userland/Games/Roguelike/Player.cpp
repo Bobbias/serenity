@@ -8,14 +8,13 @@
 #include "Player.h"
 
 
-
+namespace Roguelike{
 Player::Player()
 {
 }
 
 Player::Player(u32 maximum_health)
     : m_maximum_health(maximum_health)
-    , m_current_health(maximum_health)
 {
 }
 
@@ -30,3 +29,4 @@ Player::~Player()
 }
 
 
+}

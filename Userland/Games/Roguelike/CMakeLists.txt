@@ -7,6 +7,7 @@ serenity_component(
 set(SOURCES
     Game.cpp
     main.cpp
+    Map.cpp
     MapViewport.cpp
     Player.cpp
 )

@@ -5,14 +5,17 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
+#include "Game.h"
 #include "MapViewport.h"
+#include <AK/NonnullRefPtr.h>
 #include <LibGUI/Painter.h>
 #include <LibGfx/Font.h>
 #include <LibGfx/FontDatabase.h>
 #include <LibGfx/Palette.h>
 
 namespace Roguelike {
-MapViewport::MapViewport()
+MapViewport::MapViewport(Game& game)
+    : m_game(game)
 {
 }
 

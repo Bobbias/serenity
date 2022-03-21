@@ -5,16 +5,5 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
-#include "Game.h"
 
-namespace Roguelike {
-
-Game::Game()
-{
-
-};
-
-NonnullRefPtr<Game> Game::create(){
-    return Game();
-}
-}
+#pragma once

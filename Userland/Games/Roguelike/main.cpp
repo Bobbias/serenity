@@ -7,15 +7,16 @@
 #include "Game.h"
 #include "MapViewport.h"
 #include "Player.h"
+#include <AK/NonnullRefPtr.h>
 #include <LibConfig/Client.h>
 #include <LibCore/System.h>
-#include <LibGfx/Forward.h>
-#include <LibGfx/Point.h>
-#include <LibGUI/Statusbar.h>
 #include <LibGUI/Application.h>
 #include <LibGUI/BoxLayout.h>
 #include <LibGUI/Icon.h>
+#include <LibGUI/Statusbar.h>
 #include <LibGUI/Window.h>
+#include <LibGfx/Forward.h>
+#include <LibGfx/Point.h>
 #include <LibMain/Main.h>
 #include <stdio.h>
 #include <time.h>
@@ -43,8 +44,11 @@ ErrorOr<int> serenity_main(Main::Arguments arguments)
     main_widget->set_fill_with_background_color(true);
     
     (void)TRY(main_widget->try_set_layout<GUI::VerticalBoxLayout>());
+
+    auto game = Roguelike::Game::create();
     
-    auto viewport = TRY(main_widget->try_add<Roguelike::MapViewport>());
+
+    auto viewport = TRY(main_widget->try_add<Roguelike::MapViewport>(game));
     viewport->set_focus(true);
 
     auto statusbar = TRY(main_widget->try_add<GUI::Statusbar>());

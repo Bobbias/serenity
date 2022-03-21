@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Game.h"
+#include <AK/NonnullRefPtr.h>
 #include <LibGUI/Frame.h>
 
 namespace Roguelike
@@ -20,7 +21,7 @@ namespace Roguelike
         
 
     private:
-        explicit MapViewport();
+        explicit MapViewport(Game&);
 
         virtual void resize_event(GUI::ResizeEvent&) override;
         virtual void paint_event(GUI::PaintEvent&) override;
@@ -30,7 +31,8 @@ namespace Roguelike
         size_t rows() const;
         size_t columns() const;
 
-        NonnullRefPtr<Gfx::Bitmap> m_player_bitmap {Gfx::Bitmap::try_load_from_file("/res/icons/32x32/app-roguelike.png").release_value_but_fixme_should_propagate_errors()};
+        Game& m_game;
+        NonnullRefPtr<Gfx::Bitmap> m_player_bitmap { Gfx::Bitmap::try_load_from_file("/res/icons/32x32/app-roguelike.png").release_value_but_fixme_should_propagate_errors() };
 
         void resize();
 

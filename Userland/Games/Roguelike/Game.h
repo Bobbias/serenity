@@ -21,11 +21,14 @@
 
 namespace Roguelike {
 
-class Game final
+class Game final : public Core::Object
 {
+    C_OBJECT(Game);
+
 public:
-    Game(); // main ctor
     Game(Game const&) = default; // copy ctor
+
+    static NonnullRefPtr<Game> create();
 
     // virtual ~Game() override = default;
 
@@ -37,6 +40,7 @@ public:
     };
 
 private:
+    Game(); // main ctor
     Roguelike::Player m_player {};
 
     ErrorOr<void> try_move_player_to();

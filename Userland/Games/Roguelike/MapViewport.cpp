@@ -82,7 +82,7 @@ void MapViewport::paint_event(GUI::PaintEvent& event)
 {
     Frame::paint_event(event);
 
-    Color background_color = Color::from_rgb(0x000000);
+    Color background_color = Color::from_rgb(0xFF0000);
 
     GUI::Painter painter(*this);
     painter.add_clip_rect(event.rect());
@@ -92,6 +92,9 @@ void MapViewport::paint_event(GUI::PaintEvent& event)
     painter.fill_rect(rect(), background_color);
     painter.draw_text(event.rect(), "Hello World!"sv, Gfx::TextAlignment::Center, Color::from_rgb(0xFFFFFF));
 
+
     
+    painter.draw_scaled_bitmap(m_player_bitmap->rect(), *m_player_bitmap, m_player_bitmap->rect());
+
 }
 }

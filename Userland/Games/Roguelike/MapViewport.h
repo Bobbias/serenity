@@ -17,7 +17,7 @@ namespace Roguelike
 
     public:
         virtual ~MapViewport() override = default;
-
+        
 
     private:
         explicit MapViewport();
@@ -29,6 +29,8 @@ namespace Roguelike
 
         size_t rows() const;
         size_t columns() const;
+
+        NonnullRefPtr<Gfx::Bitmap> m_player_bitmap {Gfx::Bitmap::try_load_from_file("/res/icons/32x32/app-roguelike.png").release_value_but_fixme_should_propagate_errors()};
 
         void resize();
 

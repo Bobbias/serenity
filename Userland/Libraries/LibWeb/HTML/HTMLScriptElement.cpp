@@ -29,7 +29,10 @@ HTMLScriptElement::~HTMLScriptElement() = default;
 void HTMLScriptElement::set_parser_document(Badge<HTMLParser>, DOM::Document& document)
 {
     m_parser_document = document;
+}
 
+void HTMLScriptElement::begin_delaying_document_load_event(DOM::Document& document)
+{
     // https://html.spec.whatwg.org/multipage/scripting.html#concept-script-script
     // The user agent must delay the load event of the element's node document until the script is ready.
     m_document_load_event_delayer.emplace(document);
@@ -291,6 +294,9 @@ void HTMLScriptElement::prepare_script()
             // -> "classic"
             //    Fetch a classic script given url, settings object, options, classic script CORS setting, and encoding.
             auto request = LoadRequest::create_for_url_on_page(url, document().page());
+
+            if (parser_document)
+                begin_delaying_document_load_event(*parser_document);
 
             ResourceLoader::the().load(
                 request,

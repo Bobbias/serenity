@@ -14,6 +14,7 @@
 #include <LibWeb/Layout/InlineLevelIterator.h>
 #include <LibWeb/Layout/LineBuilder.h>
 #include <LibWeb/Layout/ReplacedBox.h>
+#include <LibWeb/Layout/SVGSVGBox.h>
 
 namespace Web::Layout {
 
@@ -56,7 +57,7 @@ float InlineFormattingContext::available_space_for_line(float y) const
     auto const& containing_block_state = m_state.get(containing_block());
     auto const& root_block_state = m_state.get(parent().root());
 
-    space.left = max(space.left, containing_block_state.offset.x());
+    space.left = max(space.left, containing_block_state.offset.x()) - containing_block_state.offset.x();
     space.right = min(root_block_state.content_width - space.right, containing_block_state.offset.x() + containing_block_state.content_width);
 
     return space.right - space.left;
@@ -83,7 +84,7 @@ void InlineFormattingContext::run(Box const&, LayoutMode layout_mode)
 
     auto& containing_block_state = m_state.get_mutable(containing_block());
 
-    if (layout_mode != LayoutMode::Default) {
+    if (layout_mode != LayoutMode::Normal) {
         containing_block_state.content_width = max_line_width;
     }
 
@@ -99,16 +100,25 @@ void InlineFormattingContext::dimension_box_on_line(Box const& box, LayoutMode l
     box_state.margin_left = computed_values.margin().left.resolved(box, width_of_containing_block).to_px(box);
     box_state.border_left = computed_values.border_left().width;
     box_state.padding_left = computed_values.padding().left.resolved(box, width_of_containing_block).to_px(box);
+
     box_state.margin_right = computed_values.margin().right.resolved(box, width_of_containing_block).to_px(box);
     box_state.border_right = computed_values.border_right().width;
     box_state.padding_right = computed_values.padding().right.resolved(box, width_of_containing_block).to_px(box);
-    box_state.padding_top = computed_values.padding().top.resolved(box, width_of_containing_block).to_px(box);
-    box_state.padding_bottom = computed_values.padding().bottom.resolved(box, width_of_containing_block).to_px(box);
+
     box_state.margin_top = computed_values.margin().top.resolved(box, width_of_containing_block).to_px(box);
+    box_state.border_top = computed_values.border_top().width;
+    box_state.padding_top = computed_values.padding().top.resolved(box, width_of_containing_block).to_px(box);
+
+    box_state.padding_bottom = computed_values.padding().bottom.resolved(box, width_of_containing_block).to_px(box);
+    box_state.border_bottom = computed_values.border_bottom().width;
     box_state.margin_bottom = computed_values.margin().bottom.resolved(box, width_of_containing_block).to_px(box);
 
     if (is<ReplacedBox>(box)) {
         auto& replaced = verify_cast<ReplacedBox>(box);
+
+        if (is<SVGSVGBox>(box))
+            (void)layout_inside(replaced, layout_mode);
+
         box_state.content_width = compute_width_for_replaced_element(m_state, replaced);
         box_state.content_height = compute_height_for_replaced_element(m_state, replaced);
         return;

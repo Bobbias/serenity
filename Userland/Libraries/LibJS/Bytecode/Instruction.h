@@ -31,6 +31,8 @@
     O(GetById)                       \
     O(GetByValue)                    \
     O(GetIterator)                   \
+    O(GetNewTarget)                  \
+    O(GetObjectPropertyIterator)     \
     O(GetVariable)                   \
     O(GreaterThan)                   \
     O(GreaterThanEquals)             \

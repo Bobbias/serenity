@@ -6,7 +6,7 @@
  */
 
 #include <AK/Types.h>
-#include <LibCore/Object.h>
+#include <AK/RefCounted.h>
 #include <LibGfx/Forward.h>
 #include <LibGfx/Point.h>
 
@@ -14,16 +14,16 @@
 
 namespace Roguelike
 {
-class Player : public Core::Object
+class Player : public RefCounted<Player>
 {
-    C_OBJECT(Player);
 
 private:
-    Gfx::IntPoint m_current_location{ 0, 0 };
+    Gfx::IntPoint m_current_location { 0, 0 };
     u32 m_maximum_health { 20 };
     u32 m_current_health { 20 };
 
 public:
+    Player();
     virtual ~Player() = default;
 
     u32 get_current_health() { return m_current_health; };

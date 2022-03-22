@@ -10,6 +10,11 @@
 
 namespace Roguelike{
 
+Player::Player()
+{
+
+}
+
 void Player::set_current_location(Gfx::IntPoint new_location)
 {
     m_current_location = new_location;

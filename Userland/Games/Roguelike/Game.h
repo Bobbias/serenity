@@ -7,6 +7,7 @@
 #include "Player.h"
 #include <AK/Optional.h>
 #include <AK/Random.h>
+#include <AK/RefCounted.h>
 #include <AK/Vector.h>
 #include <LibGUI/Application.h>
 #include <LibGUI/Frame.h>
@@ -21,14 +22,14 @@
 
 namespace Roguelike {
 
-class Game final : public Core::Object
+class Game final : public RefCounted<Game>
 {
-    C_OBJECT(Game);
 
 public:
+    Game(); // main ctor
     Game(Game const&) = default; // copy ctor
 
-    virtual ~Game() override = default;
+    // virtual ~Game() override = default;
 
     enum class Direction {
         Up,
@@ -46,8 +47,7 @@ public:
     NonnullRefPtr<Roguelike::Player> get_player();
 
 private:
-    Game(); // main ctor
-    NonnullRefPtr<Roguelike::Player> m_player = Player::construct();
+    NonnullRefPtr<Roguelike::Player> m_player = make_ref_counted<Player>();
 
     ErrorOr<void> try_move_player_to();
     ErrorOr<void> ensure_move_player_to();

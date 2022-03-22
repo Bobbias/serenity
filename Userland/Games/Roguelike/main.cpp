@@ -8,6 +8,7 @@
 #include "MapViewport.h"
 #include "Player.h"
 #include <AK/NonnullRefPtr.h>
+#include <AK/RefCounted.h>
 #include <LibConfig/Client.h>
 #include <LibCore/System.h>
 #include <LibGUI/Application.h>
@@ -45,10 +46,14 @@ ErrorOr<int> serenity_main(Main::Arguments arguments)
     
     (void)TRY(main_widget->try_set_layout<GUI::VerticalBoxLayout>());
 
-    auto game = Roguelike::Game::construct();
-    
+    auto game = try_make_ref_counted<Roguelike::Game>();
+    if (game.is_error())
+    {
+        return -1;
+    }
+    NonnullRefPtr<Roguelike::Game> the_game = game.release_value();
 
-    auto viewport = TRY(main_widget->try_add<Roguelike::MapViewport>(game));
+    auto viewport = TRY(main_widget->try_add<Roguelike::MapViewport>(the_game));
     viewport->set_focus(true);
 
     auto statusbar = TRY(main_widget->try_add<GUI::Statusbar>());

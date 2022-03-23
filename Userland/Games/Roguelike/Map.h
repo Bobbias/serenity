@@ -22,10 +22,10 @@ enum TileType {
 class Tile {
 public:
     Tile() = default;
-    constexpr Tile(TileType type)
-        : type(type) {};
+    constexpr Tile(TileType typ)
+        : type(typ) {};
 
-    operator Tile() const { return type; };
+    operator TileType() const { return type; };
     constexpr bool operator==(Tile tile) const { return type == tile.type; }
     constexpr bool operator!=(Tile tile) const { return type != tile.type; }
     constexpr bool operator==(TileType tileType) const { return type == tileType; }
@@ -42,10 +42,13 @@ class Map : RefCounted<Map>
 public:
     Map(int, int);
 
-    [[nodiscard]] Tile& operator[](Gfx::IntPoint location) { return m_map_tiles[location.x() + (location.x() * location.y())]; };
-    [[nodiscard]] constexpr Tile& operator[](Gfx::IntPoint location) const { return m_map_tiles[location.x() + (location.x() * location.y())]; };
+    [[nodiscard]] Tile& operator[](Gfx::IntPoint location) { return m_map_tiles[convert_intpoint_to_index(location)]; };
+    [[nodiscard]] Tile operator[](Gfx::IntPoint location) const { return m_map_tiles[convert_intpoint_to_index(location)]; };
 
 private:
     FixedArray<Tile> m_map_tiles;
+
+    static int convert_intpoint_to_index(Gfx::IntPoint& location) { return location.x() + (location.x() * location.y()); };
+    static int convert_intpoint_to_index(Gfx::IntPoint const& location) { return location.x() + (location.x() * location.y()); };
 };
 }

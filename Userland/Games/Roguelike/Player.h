@@ -26,9 +26,9 @@ public:
     Player();
     virtual ~Player() = default;
 
-    u32 get_current_health() { return m_current_health; };
-    u32 get_maximum_health() { return m_maximum_health; };
-    Gfx::IntPoint get_current_location() { return m_current_location; };
-    void set_current_location(Gfx::IntPoint);
+    u32& get_current_health() { return m_current_health; };
+    u32& get_maximum_health() { return m_maximum_health; };
+    Gfx::IntPoint& get_current_location() { return m_current_location; };
+    void set_current_location(Gfx::IntPoint const&);
 };
 }

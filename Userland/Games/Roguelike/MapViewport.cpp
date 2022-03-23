@@ -47,18 +47,22 @@ void MapViewport::keydown_event(GUI::KeyEvent& event)
     Gfx::IntPoint new_location;
     switch (event.key()) {
     case Key_Left:
-        dbgln("Key Pressed: {}", key_code_to_string(event.key()));
-        dbgln("Current loc: {}", current_location);
-        new_location = Gfx::IntPoint(current_location.translated(-1, 0));
-        dbgln("New loc: {}", new_location);
+        new_location = current_location.translated(-1, 0);
+        player->set_current_location(new_location);
+        update();
+        break;
+    case Key_Up:
+        new_location = current_location.translated(0, -1);
         player->set_current_location(new_location);
         update();
         break;
     case Key_Right:
-        dbgln("Key Pressed: {}", key_code_to_string(event.key()));
-        dbgln("Current loc: {}", current_location);
-        new_location = Gfx::IntPoint(current_location.translated(1, 0));
-        dbgln("New loc: {}", new_location);
+        new_location = current_location.translated(1, 0);
+        player->set_current_location(new_location);
+        update();
+        break;
+    case Key_Down:
+        new_location = current_location.translated(0, 1);
         player->set_current_location(new_location);
         update();
         break;

@@ -5,6 +5,7 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 #include "Player.h"
+#include "Map.h"
 #include <AK/Optional.h>
 #include <AK/Random.h>
 #include <AK/RefCounted.h>
@@ -45,9 +46,16 @@ public:
     GameState get_current_game_state();
     void set_current_game_state(GameState);
     NonnullRefPtr<Roguelike::Player> get_player();
+    NonnullRefPtr<Roguelike::Map> get_map() { return m_map; };
+    NonnullRefPtr<Roguelike::Tileset> get_tileset() { return m_tileset; };
 
 private:
-    NonnullRefPtr<Roguelike::Player> m_player = make_ref_counted<Player>();
+    const size_t m_map_width { 16 };
+    const size_t m_map_height { 16 };
+    
+    NonnullRefPtr<Roguelike::Player> m_player = make_ref_counted<Roguelike::Player>();
+    NonnullRefPtr<Roguelike::Map> m_map = make_ref_counted<Roguelike::Map>(m_map_width, m_map_height);
+    NonnullRefPtr<Roguelike::Tileset> m_tileset = make_ref_counted<Roguelike::Tileset>("", "/res/icons/roguelike/Cooz-curses-square-16x16.png");
 
     ErrorOr<void> try_move_player_to();
     ErrorOr<void> ensure_move_player_to();

@@ -6,6 +6,7 @@
  */
 
 #include "Game.h"
+#include "Map.h"
 #include "MapViewport.h"
 #include <AK/NonnullRefPtr.h>
 #include <LibGUI/Painter.h>
@@ -42,9 +43,13 @@ void MapViewport::resize()
 void MapViewport::keydown_event(GUI::KeyEvent& event)
 {
     
-    NonnullRefPtr<Player> player = m_game.get_player();
+    NonnullRefPtr<Roguelike::Player> player = m_game.get_player();
     Gfx::IntPoint current_location = player->get_current_location();
     Gfx::IntPoint new_location;
+
+    NonnullRefPtr<Roguelike::Tileset> tileset = m_game.get_tileset();
+    Roguelike::Map& map = m_game.get_map();
+
     switch (event.key()) {
     case Key_Left:
         new_location = current_location.translated(-1, 0);
@@ -65,6 +70,9 @@ void MapViewport::keydown_event(GUI::KeyEvent& event)
         new_location = current_location.translated(0, 1);
         player->set_current_location(new_location);
         update();
+        break;
+    case Key_Q:
+        dbgln("Tile at: {} : {} {} : {}", current_location, tileset->get_tile_rect_at(current_location), tileset->get_file_path(), map[current_location]);
         break;
     default:
         break;

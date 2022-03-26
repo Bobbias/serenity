@@ -46,16 +46,18 @@ public:
 
     void set_tile_count(int);
     int get_tile_count();
-    void set_tile_size(Gfx::IntSize);
-    Gfx::IntSize get_tile_size();
+    Gfx::IntRect get_tile_rect();
+    Gfx::IntRect rect();
 
 private:
     String m_name;
     String m_path;
     int m_tile_count {};
-    Gfx::IntSize m_tile_size { 16, 16 };
-    Gfx::IntRect& m_bitmap_dimensions;
+    Gfx::IntRect m_tile_rect { 0, 0, 16, 16 };
+    Gfx::IntSize m_atlas_shape { 16, 16 };
     NonnullRefPtr<Gfx::Bitmap> m_map_tileset_bitmap { Gfx::Bitmap::try_load_from_file("/res/icons/roguelike/Cooz-curses-square-16x16.png").release_value_but_fixme_should_propagate_errors() };
+
+    Gfx::IntRect get_tile_rect_at(Gfx::IntPoint location);
 };
 
 class Map : RefCounted<Map>

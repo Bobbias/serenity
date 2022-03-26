@@ -8,6 +8,13 @@
 
 namespace Roguelike
 {
+Tileset::Tileset(String const& name, String const& path) 
+    : m_name(name)
+    , m_path(path)
+    {
+        m_bitmap_dimensions = 
+    }
+
 Map::Map(int width, int height)
     : m_map_tiles(FixedArray<Tile>::try_create(width * height).release_value_but_fixme_should_propagate_errors()) {};
 }

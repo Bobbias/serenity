@@ -82,10 +82,12 @@ public:
     [[nodiscard]] Tile& operator[](Gfx::IntPoint location) { return m_map_tiles[convert_intpoint_to_index(location)]; };
     [[nodiscard]] Tile operator[](Gfx::IntPoint location) const { return m_map_tiles[convert_intpoint_to_index(location)]; };
     int get_tile_size() const& { return m_tile_size; };
+    Gfx::IntSize get_dimensions() const { return m_dimensions; };
 
 private:
     FixedArray<Roguelike::Tile> m_map_tiles;
     const int m_tile_size { 16 };
+    const Gfx::IntSize m_dimensions;
 
     static int convert_intpoint_to_index(Gfx::IntPoint& location) { return location.x() + (location.x() * location.y()); };
     static int convert_intpoint_to_index(Gfx::IntPoint const& location) { return location.x() + (location.x() * location.y()); };

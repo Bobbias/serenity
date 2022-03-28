@@ -26,5 +26,8 @@ Gfx::IntRect Tileset::get_tile_rect_at(Gfx::IntPoint location)
 }
 
 Map::Map(int width, int height)
-    : m_map_tiles(FixedArray<Tile>::try_create(width * height).release_value_but_fixme_should_propagate_errors()) {};
+    : m_map_tiles(FixedArray<Tile>::try_create(width * height).release_value_but_fixme_should_propagate_errors())
+    , m_dimensions({ width, height })
+{  
+};
 }

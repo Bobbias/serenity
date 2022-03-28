@@ -109,3 +109,11 @@ struct AK::Formatter<Roguelike::Tileset> : Formatter<FormatString> {
         return Formatter<FormatString>::format(builder, "{}", tileset.get_file_path());
     }
 };
+
+template<>
+struct AK::Formatter<Roguelike::Map> : Formatter<FormatString> {
+    ErrorOr<void> format(FormatBuilder& builder, Roguelike::Map const& map)
+    {
+        return Formatter<FormatString>::format(builder, "{}", map.get_dimensions());
+    }
+};

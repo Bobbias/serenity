@@ -36,6 +36,19 @@ public:
     [[nodiscard]] constexpr bool operator==(TileType tileType) const { return type == tileType; }
     [[nodiscard]] constexpr bool operator!=(TileType tileType) const { return type != tileType; }
 
+    constexpr StringView to_stringview() const {
+        switch (type) {
+        case Roguelike::TileType::Floor:
+            return "Floor"sv;
+        case Roguelike::TileType::Wall:
+            return "Wall"sv;
+        case Roguelike::TileType::Invalid:
+            return "Invalid"sv;
+        default:
+            VERIFY_NOT_REACHED();
+        }
+    }
+
 private:
     TileType type;
 };
@@ -83,23 +96,7 @@ template<>
 struct AK::Formatter<Roguelike::Tile> : Formatter<FormatString> {
     ErrorOr<void> format(FormatBuilder& builder, Roguelike::Tile const& tile)
     {
-        StringView tile_name;
-
-        switch (tile) {
-        case Roguelike::TileType::Floor:
-            tile_name = "Floor"sv;
-            break;
-        case Roguelike::TileType::Wall:
-            tile_name = "Wall"sv;
-            break;
-        case Roguelike::TileType::Invalid:
-            tile_name = "Invalid"sv;
-            break;
-        default:
-            VERIFY_NOT_REACHED();
-        }
-
-        return Formatter<FormatString>::format(builder, "{}", tile_name);
+        return Formatter<FormatString>::format(builder, "{}", tile.to_stringview());
     }
 };
 

@@ -30,7 +30,7 @@ public:
     constexpr Tile(TileType typ)
         : type(typ) {};
 
-    [[nodiscard]] operator TileType() const { return type; };
+    [[nodiscard]] constexpr operator TileType() const { return type; };
     [[nodiscard]] constexpr bool operator==(Tile tile) const { return type == tile.type; }
     [[nodiscard]] constexpr bool operator!=(Tile tile) const { return type != tile.type; }
     [[nodiscard]] constexpr bool operator==(TileType tileType) const { return type == tileType; }

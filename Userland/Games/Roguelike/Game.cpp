@@ -14,8 +14,6 @@ Game::Game() {
 
 };
 
-NonnullRefPtr<Roguelike::Player> Game::get_player() { return m_player; }
-
 Game::GameState Game::get_current_game_state() { return m_current_game_state; };
 
 void Game::set_current_game_state(Game::GameState new_state)

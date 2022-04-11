@@ -51,7 +51,7 @@ ErrorOr<int> serenity_main(Main::Arguments arguments)
     auto game = try_make_ref_counted<Roguelike::Game>();
     if (game.is_error())
     {
-        return -1;
+        return Error::from_string_literal("Could not create Game object"sv);
     }
     NonnullRefPtr<Roguelike::Game> the_game = game.release_value();
 

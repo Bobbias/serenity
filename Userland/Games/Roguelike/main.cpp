@@ -5,6 +5,7 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 #include "Game.h"
+#include "Map.h"
 #include "MapViewport.h"
 #include "Player.h"
 #include <AK/NonnullRefPtr.h>
@@ -18,6 +19,7 @@
 #include <LibGUI/Window.h>
 #include <LibGfx/Forward.h>
 #include <LibGfx/Point.h>
+#include <LibGfx/Size.h>
 #include <LibMain/Main.h>
 #include <stdio.h>
 #include <time.h>
@@ -55,10 +57,20 @@ ErrorOr<int> serenity_main(Main::Arguments arguments)
     }
     NonnullRefPtr<Roguelike::Game> the_game = game.release_value();
 
+    auto map = the_game->get_map();
+    the_game->get_player()->set_current_location(map->get_rooms()[0].center());
+
     auto viewport = TRY(main_widget->try_add<Roguelike::MapViewport>(the_game));
     viewport->set_focus(true);
 
     auto statusbar = TRY(main_widget->try_add<GUI::Statusbar>());
+
+    auto window_size { map->get_dimensions() * map->get_tile_size() };
+    
+    // Fixme: The status bar reports no height yet, so we use a hardcoded fixed size to account for it.
+    //        The hardcoded size given in the status bar class indicates a height of 18, but that appears
+    //        to be an size, so we add some extra height to compensate.
+    window->resize(window_size.width(), window_size.height() + 20);
 
     window->set_icon(app_icon.bitmap_for_size(16));
     window->show();

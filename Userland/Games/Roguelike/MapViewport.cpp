@@ -53,23 +53,15 @@ void MapViewport::keydown_event(GUI::KeyEvent& event)
     switch (event.key()) {
     case Key_Left:
         new_location = current_location.translated(-1, 0);
-        player->set_current_location(new_location);
-        update();
         break;
     case Key_Up:
         new_location = current_location.translated(0, -1);
-        player->set_current_location(new_location);
-        update();
         break;
     case Key_Right:
         new_location = current_location.translated(1, 0);
-        player->set_current_location(new_location);
-        update();
         break;
     case Key_Down:
         new_location = current_location.translated(0, 1);
-        player->set_current_location(new_location);
-        update();
         break;
     case Key_Q:
         dbgln("Tile at: {} : {} {} : {}", current_location, tileset->get_tile_rect_at(current_location), tileset->get_file_path(), map[current_location]);

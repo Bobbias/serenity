@@ -22,7 +22,7 @@ class Point {
 public:
     Point() = default;
 
-    Point(T x, T y)
+    constexpr Point(T x, T y)
         : m_x(x)
         , m_y(y)
     {

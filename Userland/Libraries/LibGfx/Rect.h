@@ -41,7 +41,7 @@ public:
     {
     }
 
-    Rect(Point<T> const& location, Size<T> const& size)
+    constexpr Rect(Point<T> const& location, Size<T> const& size)
         : m_location(location)
         , m_size(size)
     {

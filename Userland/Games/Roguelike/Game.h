@@ -45,9 +45,9 @@ public:
 
     GameState get_current_game_state();
     void set_current_game_state(GameState);
-    NonnullRefPtr<Roguelike::Player> get_player();
-    NonnullRefPtr<Roguelike::Map> get_map() { return m_map; };
-    NonnullRefPtr<Roguelike::Tileset> get_tileset() { return m_tileset; };
+    NonnullRefPtr<Roguelike::Player> get_player() { return m_player; }
+    NonnullRefPtr<Roguelike::Map> get_map() { return m_map; }
+    NonnullRefPtr<Roguelike::Tileset> get_tileset() { return m_tileset; }
 
 private:
     const size_t m_map_width { 16 };

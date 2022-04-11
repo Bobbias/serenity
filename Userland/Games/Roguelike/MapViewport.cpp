@@ -64,10 +64,14 @@ void MapViewport::keydown_event(GUI::KeyEvent& event)
         new_location = current_location.translated(0, 1);
         break;
     case Key_Q:
-        dbgln("Tile at: {} : {} {} : {}", current_location, tileset->get_tile_rect_at(current_location), tileset->get_file_path(), map[current_location]);
+        dbgln("Tile at: {} : {} {} : {}", current_location, tileset->get_tile_rect_at(current_location.x(), current_location.y()), tileset->get_file_path(), map[current_location]);
         break;
     default:
         break;
+    }
+    if (map[new_location].traversable()) {
+        player->set_current_location(new_location);
+        update();
     }
 }
 
@@ -80,17 +84,38 @@ void MapViewport::paint_event(GUI::PaintEvent& event)
 {
     Frame::paint_event(event);
 
-    Color background_color = Color::from_rgb(0xFF0000);
+    Color background_color = Color::from_rgb(0x000000);
+    Color outside_map_color = Color::from_rgb(0x2E2E2E);
 
     GUI::Painter painter(*this);
     painter.add_clip_rect(event.rect());
     painter.add_clip_rect(frame_inner_rect());
     painter.translate(frame_thickness(), frame_thickness());
 
-    painter.fill_rect(rect(), background_color);
-    painter.draw_text(event.rect(), "Hello World!"sv, Gfx::TextAlignment::Center, Color::from_rgb(0xFFFFFF));
+    auto map = m_game.get_map();
+    auto tileset = m_game.get_tileset();
+    auto tile_size = tileset->get_tile_rect(Roguelike::TileType::PlayerTile).size();
 
-    auto dest_rect = Gfx::Rect(m_game.get_player()->get_current_location(), m_player_bitmap->rect().size());
-    painter.draw_scaled_bitmap(dest_rect, *m_player_bitmap, m_player_bitmap->rect());
+    // Note: Consider whether it's better to use the Rect<T>::shatter method instead first painting the background
+    //       and then painting over it. I think this depends on whether the painter is smart enough to automatically
+    //       detect this behavior or not.
+    painter.fill_rect(rect(), outside_map_color);
+    painter.fill_rect({{0, 0}, map->get_dimensions() * map->get_tile_size()}, background_color);
+
+
+    Gfx::IntRect dest_rect;
+    Tile tile;
+    for (int y = 0; y < map->get_dimensions().height(); ++y) {
+        for (int x = 0; x < map->get_dimensions().width(); ++x)
+        {
+            dest_rect = Gfx::Rect({ x * tile_size.width(), y * tile_size.height() }, tile_size);
+            tile = (*map)[Gfx::IntPoint { x, y }];
+            painter.draw_scaled_bitmap(dest_rect, tileset->get_bitmap(), tileset->get_tile_rect(tile));
+        }
+    }
+    auto player_location = m_game.get_player()->get_current_location();
+    dest_rect = Gfx::Rect({player_location.x() * tile_size.width(), player_location.y() * tile_size.height()}, tile_size);
+    
+    painter.draw_scaled_bitmap(dest_rect, tileset->get_bitmap(), tileset->get_tile_rect(Roguelike::TileType::PlayerTile));
 }
 }

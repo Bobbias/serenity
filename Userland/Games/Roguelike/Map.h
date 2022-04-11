@@ -5,92 +5,97 @@
  * SPDX-License-Identifier: BSD-2-Clause
  */
 
+#include "Player.h"
+#include "Tile.h"
+#include "Tileset.h"
 #include <AK/FixedArray.h>
 #include <AK/NonnullRefPtr.h>
+#include <AK/Random.h>
 #include <AK/RefCounted.h>
 #include <AK/String.h>
+#include <AK/Vector.h>
 #include <LibGfx/Bitmap.h>
 #include <LibGfx/Point.h>
 #include <LibGfx/Rect.h>
 
 #pragma once
 
+#define __RL_DEBUG
+
 namespace Roguelike {
 
-// using the sort of tricks mentioned here to enable helper functions and shit: https://stackoverflow.com/a/64138113
-enum TileType {
-    Floor,
-    Wall,
-    Invalid,
-};
-
-class Tile {
-public:
-    Tile() = default;
-    constexpr Tile(TileType typ)
-        : type(typ) {};
-
-    [[nodiscard]] constexpr operator TileType() const { return type; };
-    [[nodiscard]] constexpr bool operator==(Tile tile) const { return type == tile.type; }
-    [[nodiscard]] constexpr bool operator!=(Tile tile) const { return type != tile.type; }
-    [[nodiscard]] constexpr bool operator==(TileType tileType) const { return type == tileType; }
-    [[nodiscard]] constexpr bool operator!=(TileType tileType) const { return type != tileType; }
-
-    constexpr StringView to_stringview() const {
-        switch (type) {
-        case Roguelike::TileType::Floor:
-            return "Floor"sv;
-        case Roguelike::TileType::Wall:
-            return "Wall"sv;
-        case Roguelike::TileType::Invalid:
-            return "Invalid"sv;
-        default:
-            VERIFY_NOT_REACHED();
-        }
-    }
-
-private:
-    TileType type;
-};
-
-class Tileset : public RefCounted<Tileset> {
-public:
-    Tileset(String const&, String const&);
-
-    void set_tile_count(int);
-    int get_tile_count();
-    Gfx::IntRect get_tile_rect();
-    Gfx::IntRect rect();
-
-    StringView get_file_path() const { return { m_path.characters(), m_path.length() }; };
-    Gfx::IntRect get_tile_rect_at(Gfx::IntPoint location);
-
-private:
-    String m_name;
-    String m_path;
-    int m_tile_count {};
-    Gfx::IntRect m_tile_rect { 0, 0, 16, 16 };
-    Gfx::IntSize m_atlas_shape { 16, 16 };
-    NonnullRefPtr<Gfx::Bitmap> m_map_tileset_bitmap { Gfx::Bitmap::try_load_from_file("/res/icons/roguelike/Cooz-curses-square-16x16.png").release_value_but_fixme_should_propagate_errors() };
+enum class MapGenerator {
+    SimpleRooms,
+    SingleRoom,
 };
 
 class Map : public RefCounted<Map>
 {
 public:
+    // Fixme: Map currently does not have a generic way to implement multiple dungeon generation algorithms.
     Map(int, int);
 
-    [[nodiscard]] Tile& operator[](Gfx::IntPoint location) { return m_map_tiles[convert_intpoint_to_index(location)]; };
-    [[nodiscard]] Tile operator[](Gfx::IntPoint location) const { return m_map_tiles[convert_intpoint_to_index(location)]; };
-    int get_tile_size() const& { return m_tile_size; };
-    Gfx::IntSize get_dimensions() const { return m_dimensions; };
+    [[nodiscard]] Tile& operator[](Gfx::IntPoint location) { return m_map_tiles[convert_intpoint_to_index(location)]; }
+    [[nodiscard]] Tile operator[](Gfx::IntPoint location) const { return m_map_tiles[convert_intpoint_to_index(location)]; }
+
+    int get_tile_size() const& { return m_tile_size; }
+    Gfx::IntSize get_dimensions() const { return m_dimensions; }
+    FixedArray<Roguelike::Tile>& get_tiles() { return m_map_tiles; }
+    Vector<Gfx::IntRect>& get_rooms() { return m_rooms; }
 
 private:
     FixedArray<Roguelike::Tile> m_map_tiles;
     const int m_tile_size { 16 };
     const Gfx::IntSize m_dimensions;
 
-    static int convert_intpoint_to_index(Gfx::IntPoint& location) { return location.x() + (location.x() * location.y()); };
-    static int convert_intpoint_to_index(Gfx::IntPoint const& location) { return location.x() + (location.x() * location.y()); };
+    const int max_rooms = 10;
+    const int min_room_size = 5;
+    const int max_room_size = 9;
+
+    Vector<Gfx::IntRect> m_rooms {};
+
+    void create_room(Gfx::IntRect room_rect)
+    {
+        #ifdef __RL_DEBUG
+        dbgln("x{}, y{}, w{}, h{}", room_rect.x(), room_rect.y(), room_rect.width(), room_rect.height());
+        #endif
+        for (int y = room_rect.y() + 1; y < (room_rect.y() + room_rect.height() - 1); ++y) {
+            for (int x = room_rect.x() + 1; x < (room_rect.x() + room_rect.width() - 1); ++x) {
+                #ifdef __RL_DEBUG
+                dbgln("{}, {} FLOOR", x, y);
+                #endif
+                VERIFY((size_t)(x + (m_dimensions.width() * y)) < m_map_tiles.size());
+                m_map_tiles[x + (m_dimensions.width() * y)] = TileType::Floor;
+            }
+        }
+    }
+
+    void create_vertical_hall(Gfx::IntPoint point1, Gfx::IntPoint point2)
+    {
+        int y = min(point1.y(), point2.y());
+        int end = max(point1.y(), point2.y());
+        for (; y <= end; ++y) {
+            m_map_tiles[point1.x() + (m_dimensions.width() * y)] = TileType::Floor;
+        }
+    }
+    void create_horizontal_hall(Gfx::IntPoint point1, Gfx::IntPoint point2)
+    {
+        int x = min(point1.x(), point2.x());
+        int end = max(point1.x(), point2.x());
+        for (; x <= end; ++x) {
+            m_map_tiles[x + (m_dimensions.width() * point1.y())] = TileType::Floor;
+        }
+    }
+    void connect_rooms(Gfx::IntRect room1, Gfx::IntRect room2)
+    {
+        auto center1 = room1.center();
+        auto center2 = room2.center();
+        create_horizontal_hall(center1, { center2.x(), center1.y() });
+        create_vertical_hall(center2, { center2.x(), center1.y() });
+    }
+
+    int convert_intpoint_to_index(Gfx::IntPoint& location) { return location.x() + (m_dimensions.width() * location.y()); }
+    int convert_intpoint_to_index(Gfx::IntPoint const& location) const { return location.x() + (m_dimensions.width() * location.y()); }
 };
 }
 

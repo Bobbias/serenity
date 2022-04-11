@@ -22,6 +22,8 @@
 #include <stdio.h>
 #include <time.h>
 
+#define __RL_DEBUG // comment this line to remove debug output
+
 ErrorOr<int> serenity_main(Main::Arguments arguments)
 {
     TRY(Core::System::pledge("stdio recvfd sendfd rpath unix"));

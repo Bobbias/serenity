@@ -4,6 +4,7 @@
  *
  * SPDX-License-Identifier: BSD-2-Clause
  */
+
 #include "Player.h"
 #include "Map.h"
 #include <AK/Optional.h>

@@ -55,7 +55,7 @@ private:
     
     NonnullRefPtr<Roguelike::Player> m_player = make_ref_counted<Roguelike::Player>();
     NonnullRefPtr<Roguelike::Map> m_map = make_ref_counted<Roguelike::Map>(m_map_width, m_map_height);
-    NonnullRefPtr<Roguelike::Tileset> m_tileset = make_ref_counted<Roguelike::Tileset>("", "/res/icons/roguelike/Cooz-curses-square-16x16.png");
+    NonnullRefPtr<Roguelike::Tileset> m_tileset = make_ref_counted<Roguelike::Tileset>("Cooz curses square 16x16", "/res/icons/roguelike/Cooz-curses-square-16x16.png");
 
     ErrorOr<void> try_move_player_to();
     ErrorOr<void> ensure_move_player_to();

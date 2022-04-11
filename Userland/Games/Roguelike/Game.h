@@ -50,8 +50,8 @@ public:
     NonnullRefPtr<Roguelike::Tileset> get_tileset() { return m_tileset; }
 
 private:
-    const size_t m_map_width { 16 };
-    const size_t m_map_height { 16 };
+    const size_t m_map_width { 32 };
+    const size_t m_map_height { 32 };
     
     NonnullRefPtr<Roguelike::Player> m_player = make_ref_counted<Roguelike::Player>();
     NonnullRefPtr<Roguelike::Map> m_map = make_ref_counted<Roguelike::Map>(m_map_width, m_map_height);

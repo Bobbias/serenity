@@ -19,16 +19,18 @@ class Player : public RefCounted<Player>
 
 private:
     Gfx::IntPoint m_current_location { 0, 0 };
-    u32 m_maximum_health { 20 };
-    u32 m_current_health { 20 };
+    unsigned m_maximum_health { 20 };
+    unsigned m_current_health { 20 };
 
 public:
     Player();
     virtual ~Player() = default;
 
-    u32& get_current_health() { return m_current_health; };
-    u32& get_maximum_health() { return m_maximum_health; };
-    Gfx::IntPoint& get_current_location() { return m_current_location; };
+    unsigned const& get_current_health() const;
+    void set_current_health(unsigned&);
+    unsigned const& get_maximum_health() const;
+    void set_maximum_health(unsigned&);
+    Gfx::IntPoint const& get_current_location() const;
     void set_current_location(Gfx::IntPoint const&);
 };
 }

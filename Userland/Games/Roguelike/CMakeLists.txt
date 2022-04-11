@@ -10,6 +10,9 @@ set(SOURCES
     Map.cpp
     MapViewport.cpp
     Player.cpp
+    Enemy.cpp
+    Tile.cpp
+    Tileset.cpp
 )
 
 serenity_app(Roguelike ICON app-roguelike)
